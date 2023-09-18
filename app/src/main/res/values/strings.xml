@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SwarmskyToX</string>
-    <string name="button_title">設定</string>
+    <string name="button_refresh">更新</string>
+    <string name="button_settings">設定</string>
     <string name="settings_edit_text_host">ホスト名</string>
     <string name="settings_edit_text_userid">ユーザID</string>
     <string name="settings_text_view_host">例: misskey.io</string>

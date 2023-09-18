@@ -57,10 +57,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(getApplication(), SettingsActivity.class);
-        intent.putExtra("host", host);
-        intent.putExtra("userId", userId);
-        startActivityForResult(intent, 1);
+        if (item.getItemId() == R.id.action_button_refresh) {
+            update();
+        } else if (item.getItemId() == R.id.action_button_settings) {
+            Intent intent = new Intent(getApplication(), SettingsActivity.class);
+            intent.putExtra("host", host);
+            intent.putExtra("userId", userId);
+            startActivityForResult(intent, 1);
+        }
         return true;
     }
 
