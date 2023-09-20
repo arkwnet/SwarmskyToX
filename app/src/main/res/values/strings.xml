@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">SwarmskyToX</string>
+    <string name="app_description">Misskey (Swarmsky) の投稿をXに転送するアプリ</string>
+    <string name="app_version">Version 1.0.0</string>
+    <string name="app_copyright">Copyright (c) 2023 Sora Arakawa</string>
+    <string name="app_license">Licensed under the MIT License</string>
     <string name="button_refresh">更新</string>
     <string name="button_settings">設定</string>
     <string name="settings_edit_text_host">ホスト名</string>
     <string name="settings_edit_text_userid">ユーザID</string>
     <string name="settings_text_view_host">例: misskey.io</string>
-    <string name="settings_text_view_userid">Misskeyの設定→その他→アカウント情報から確認できます</string>
+    <string name="settings_text_view_userid">例: 12345abcde</string>
+    <string name="settings_text_view_userid2">Misskeyの設定→その他→アカウント情報から確認できます</string>
     <string name="settings_button_ok">OK</string>
 </resources>
