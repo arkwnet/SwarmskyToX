@@ -135,6 +135,28 @@
                 android:text="@string/app_license"
                 android:textAlignment="center" />
 
+            <TextView
+                android:id="@+id/text_view_url_web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:text="@string/app_url_web"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/text_view_url_github"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:text="@string/app_url_github"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="14sp" />
+
         </LinearLayout>
     </ScrollView>
 

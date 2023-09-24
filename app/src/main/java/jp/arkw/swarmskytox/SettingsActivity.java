@@ -3,11 +3,10 @@ package jp.arkw.swarmskytox;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-
-import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editTextHost;
@@ -23,6 +22,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         editTextHost.setText(intent.getStringExtra("host"));
         editTextUserId.setText(intent.getStringExtra("userId"));
         findViewById(R.id.button_ok).setOnClickListener(this);
+        findViewById(R.id.text_view_url_web).setOnClickListener(this);
+        findViewById(R.id.text_view_url_github).setOnClickListener(this);
     }
 
     public void onClick(View v) {
@@ -32,6 +33,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             intent.putExtra("userId", editTextUserId.getText().toString());
             setResult(RESULT_OK, intent);
             finish();
+        } else if (v.getId() == R.id.text_view_url_web) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.app_url_web)));
+            startActivity(intent);
+        } else if (v.getId() == R.id.text_view_url_github) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.app_url_github)));
+            startActivity(intent);
         }
     }
 }
