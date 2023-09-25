@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView = findViewById(R.id.list_view);
         listView.setOnItemClickListener(this);
         arrayAdapter = new ArrayAdapter<>(
-            getApplicationContext(),
-            android.R.layout.simple_list_item_1,
+            this,
+            R.layout.list,
             arrayList
         );
         listView.setAdapter(arrayAdapter);
