@@ -1,9 +1,6 @@
-<center>
 <img src="./design/logo.png" width="80%">
 
 **Misskey (Swarmsky) の投稿を X に転送するアプリ**
-
-</center>
 
 ## ライセンス
 
