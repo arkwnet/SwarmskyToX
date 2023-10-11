@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        getSharedPreferences();
         listView = findViewById(R.id.list_view);
         listView.setOnItemClickListener(this);
         arrayAdapter = new ArrayAdapter<>(
@@ -69,7 +68,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void update() {
-        if (!host.equals("") || !userId.equals("")) {
+        host = sharedPreferences.getString("host", "");
+        userId = sharedPreferences.getString("userId", "");
+        arrayList.clear();
+        arrayAdapter.notifyDataSetChanged();
+        if (!host.equals("") && !userId.equals("")) {
             try {
                 JSONObject request = new JSONObject();
                 request.put("userId", userId);
@@ -79,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     protected void onPostExecute(String response) {
                         try {
                             JSONArray jsonArray = new JSONArray(response);
-                            arrayList.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 String text = jsonObject.getString("text");
@@ -121,18 +123,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             editor.putString("host", intent.getStringExtra("host"));
             editor.putString("userId", intent.getStringExtra("userId"));
             editor.apply();
-            getSharedPreferences();
             update();
         }
     }
 
-    private void getSharedPreferences() {
-        host = sharedPreferences.getString("host", "");
-        userId = sharedPreferences.getString("userId", "");
-    }
-
     private void showAlert(String text) {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this, R.style.Dialog_Theme_SwarmskyToX)
                 .setTitle("")
                 .setMessage(text)
                 .setPositiveButton("OK", null)

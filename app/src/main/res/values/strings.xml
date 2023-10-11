@@ -14,4 +14,5 @@
     <string name="settings_text_view_userid">例: 1a23bcdef4</string>
     <string name="settings_text_view_userid2">Misskeyの設定→その他→アカウント情報から確認できます</string>
     <string name="settings_button_ok">OK</string>
+    <string name="settings_privacy">プライバシーポリシー</string>
 </resources>

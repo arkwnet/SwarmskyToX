@@ -6,4 +6,8 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/black</item>
     </style>
+
+    <style name="Dialog.Theme.SwarmskyToX" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
 </resources>
