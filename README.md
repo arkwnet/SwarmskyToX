@@ -9,6 +9,12 @@ SwarmskyToX は、Swarmsky 経由で Misskey に投稿されたノートを X (�
 
 注意: 本アプリは Swarmsky の非公式アプリです。本アプリに関する問い合わせを Swarmsky へ行わないでください。
 
+<div align="center">
+<a href="https://play.google.com/store/apps/details?id=jp.arkw.swarmskytox">
+<img src="./design/google-play-badge.png" width="30%">
+</a>
+</div>
+
 ## 特徴
 
 - Swarm の Twitter 連携と同じ「I'm at ～」文面をポストできます
