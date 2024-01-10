@@ -12,6 +12,7 @@ import android.widget.TextView;
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editTextHost;
     private EditText editTextUserId;
+    private EditText editTextToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +23,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         editTextHost = findViewById(R.id.edit_text_host);
         editTextUserId = findViewById(R.id.edit_text_userid);
+        editTextToken = findViewById(R.id.edit_text_token);
         editTextHost.setText(intent.getStringExtra("host"));
         editTextUserId.setText(intent.getStringExtra("userId"));
+        editTextToken.setText(intent.getStringExtra("token"));
         findViewById(R.id.button_ok).setOnClickListener(this);
         findViewById(R.id.text_view_url_web).setOnClickListener(this);
         findViewById(R.id.text_view_url_github).setOnClickListener(this);
@@ -35,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
             intent.putExtra("host", editTextHost.getText().toString());
             intent.putExtra("userId", editTextUserId.getText().toString());
+            intent.putExtra("token", editTextToken.getText().toString());
             setResult(RESULT_OK, intent);
             finish();
         } else if (v.getId() == R.id.text_view_url_web) {
