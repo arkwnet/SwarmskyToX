@@ -3,6 +3,7 @@ package jp.arkw.swarmskytox;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter<String> arrayAdapter;
     private SharedPreferences sharedPreferences;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             arrayList
         );
         listView.setAdapter(arrayAdapter);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("読み込み中…");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         update();
     }
 
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         arrayList.clear();
         arrayAdapter.notifyDataSetChanged();
         if (!host.equals("") && !userId.equals("")) {
+            progressDialog.show();
             try {
                 JSONObject request = new JSONObject();
                 request.put("userId", userId);
@@ -92,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 }
                             }
                             arrayAdapter.notifyDataSetChanged();
+                            progressDialog.dismiss();
                         } catch (JSONException e) {
                         }
                     }

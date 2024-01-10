@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editTextHost;
@@ -16,6 +17,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        TextView textViewVersion = findViewById(R.id.text_view_version);
+        textViewVersion.setText("Version " + getResources().getString(R.string.versionName));
         Intent intent = getIntent();
         editTextHost = findViewById(R.id.edit_text_host);
         editTextUserId = findViewById(R.id.edit_text_userid);
