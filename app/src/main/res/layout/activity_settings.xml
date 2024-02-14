@@ -44,6 +44,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp"
                 android:padding="4dp"
                 android:text="@string/settings_text_view_host" />
 
@@ -67,15 +68,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-8dp"
+                android:layout_marginTop="-4dp"
                 android:padding="4dp"
                 android:text="@string/settings_text_view_userid" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="@string/settings_text_view_userid2" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -97,8 +92,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp"
                 android:padding="4dp"
-                android:text="@string/settings_text_view_token" />
+                android:text="@string/settings_text_view_token"
+                android:textColor="@color/design_default_color_error" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-6dp"
+                android:padding="4dp"
+                android:text="@string/settings_text_view_token2" />
 
             <Button
                 android:id="@+id/button_ok"
