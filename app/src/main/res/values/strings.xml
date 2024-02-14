@@ -9,9 +9,11 @@
     <string name="button_settings">設定</string>
     <string name="settings_edit_text_host">ホスト名</string>
     <string name="settings_edit_text_userid">ユーザID</string>
+    <string name="settings_edit_text_token">APIトークン(必要な場合のみ)</string>
     <string name="settings_text_view_host">例: misskey.io</string>
     <string name="settings_text_view_userid">例: 1a23bcdef4</string>
     <string name="settings_text_view_userid2">Misskeyの設定→その他→アカウント情報から確認できます</string>
+    <string name="settings_text_view_token">Misskeyの設定→API→アクセストークンの発行から取得できます</string>
     <string name="settings_button_ok">OK</string>
     <string name="settings_privacy">プライバシーポリシー</string>
 </resources>

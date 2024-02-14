@@ -77,6 +77,29 @@
                 android:padding="4dp"
                 android:text="@string/settings_text_view_userid2" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="4dp"
+                android:text="@string/settings_edit_text_token"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="@string/settings_text_view_token" />
+
             <Button
                 android:id="@+id/button_ok"
                 android:layout_width="100dp"
