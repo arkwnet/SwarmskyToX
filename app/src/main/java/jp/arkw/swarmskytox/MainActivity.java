@@ -23,10 +23,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private String host;
     private String userId;
+    private String token;
     private ListView listView;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter<String> arrayAdapter;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Intent intent = new Intent(getApplication(), SettingsActivity.class);
             intent.putExtra("host", host);
             intent.putExtra("userId", userId);
+            intent.putExtra("token", token);
             startActivityForResult(intent, 1);
         }
         return true;
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void update() {
         host = sharedPreferences.getString("host", "");
         userId = sharedPreferences.getString("userId", "");
+        token = sharedPreferences.getString("token", "");
         arrayList.clear();
         arrayAdapter.notifyDataSetChanged();
         if (!host.equals("") && !userId.equals("")) {
@@ -83,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 JSONObject request = new JSONObject();
                 request.put("userId", userId);
                 request.put("limit", 5);
+                if (!token.equals("")) {
+                    request.put("i", token);
+                }
+
                 new SendPostAsyncTask() {
                     @Override
                     protected void onPostExecute(String response) {
@@ -91,9 +99,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 String text = jsonObject.getString("text");
-                                if (text.indexOf("swarmapp") != -1 && text.length() >= 1) {
-                                    text = text.replace("[swarmapp](", "");
-                                    text = text.substring(0, text.length() - 1);
+                                if (text.indexOf("swarmapp") != -1 || text.indexOf("foursquare") != -1 || text.indexOf("ifttt") != -1) {
+                                    if (text.indexOf("[swarmapp](") != -1) {
+                                        text = text.replace("[swarmapp](", "");
+                                        text = text.substring(0, text.length() - 1);
+                                    }
                                     arrayList.add(text);
                                 }
                             }
@@ -129,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Editor editor = sharedPreferences.edit();
             editor.putString("host", intent.getStringExtra("host"));
             editor.putString("userId", intent.getStringExtra("userId"));
+            editor.putString("token", intent.getStringExtra("token"));
             editor.apply();
             update();
         }

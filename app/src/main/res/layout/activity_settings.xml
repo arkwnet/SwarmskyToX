@@ -44,6 +44,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp"
                 android:padding="4dp"
                 android:text="@string/settings_text_view_host" />
 
@@ -67,15 +68,41 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-8dp"
+                android:layout_marginTop="-4dp"
                 android:padding="4dp"
                 android:text="@string/settings_text_view_userid" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="4dp"
+                android:text="@string/settings_edit_text_token"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp"
                 android:padding="4dp"
-                android:text="@string/settings_text_view_userid2" />
+                android:text="@string/settings_text_view_token"
+                android:textColor="@color/design_default_color_error" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-6dp"
+                android:padding="4dp"
+                android:text="@string/settings_text_view_token2" />
 
             <Button
                 android:id="@+id/button_ok"

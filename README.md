@@ -33,7 +33,6 @@ SwarmskyToX は、Swarmsky 経由で Misskey に投稿されたノートを X (�
 
 ## ライセンス
 
-Copyright (c) 2023,2024 Sora Arakawa  
-Licensed under the MIT License
+MIT
 
 詳しくは LICENSE ファイルをご参照ください。
