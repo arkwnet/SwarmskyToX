@@ -22,7 +22,7 @@ public class SendPostAsyncTask extends AsyncTask<SendPostTaskParams, String, Str
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
-            conn.setConnectTimeout(60000);
+            conn.setConnectTimeout(10000);
             conn.addRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
             conn.getOutputStream().write(postDataBytes);
