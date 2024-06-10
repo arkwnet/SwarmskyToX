@@ -15,23 +15,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private String host;
     private String userId;
     private String token;
     private ListView listView;
-    private ArrayList<String> arrayList = new ArrayList<>();
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<Map<String, Object>> arrayList = new ArrayList<>();
+    private SimpleAdapter simpleAdapter;
+    private static final String[] simpleAdapterKey = {"text", "createdAt"};
+    private static final int[] simpleAdapterId = {R.id.text, R.id.created_at};
     private SharedPreferences sharedPreferences;
     private ProgressDialog progressDialog;
 
@@ -42,12 +45,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         listView = findViewById(R.id.list_view);
         listView.setOnItemClickListener(this);
-        arrayAdapter = new ArrayAdapter<>(
-            this,
-            R.layout.list,
-            arrayList
-        );
-        listView.setAdapter(arrayAdapter);
+        simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.list, simpleAdapterKey, simpleAdapterId);
+        listView.setAdapter(simpleAdapter);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("読み込み中…");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         userId = sharedPreferences.getString("userId", "");
         token = sharedPreferences.getString("token", "");
         arrayList.clear();
-        arrayAdapter.notifyDataSetChanged();
+        simpleAdapter.notifyDataSetChanged();
         if (!host.equals("") && !userId.equals("")) {
             progressDialog.show();
             try {
@@ -104,10 +103,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                         text = text.replace("[swarmapp](", "");
                                         text = text.substring(0, text.length() - 1);
                                     }
-                                    arrayList.add(text);
+                                    HashMap<String,Object> hashMap = new HashMap<>();
+                                    hashMap.put("text", text);
+                                    hashMap.put("createdAt", jsonObject.getString("createdAt"));
+                                    arrayList.add(hashMap);
                                 }
                             }
-                            arrayAdapter.notifyDataSetChanged();
+                            simpleAdapter.notifyDataSetChanged();
                             progressDialog.dismiss();
                         } catch (JSONException e) {
                         }
@@ -127,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int index, long i) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        String messsage = Uri.encode(arrayList.get(index));
+        String messsage = Uri.encode((String) arrayList.get(index).get("text"));
         intent.setData(Uri.parse("twitter://post?message=" + messsage));
         startActivity(intent);
     }
