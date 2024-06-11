@@ -22,9 +22,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private String host;
@@ -103,15 +107,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                         text = text.replace("[swarmapp](", "");
                                         text = text.substring(0, text.length() - 1);
                                     }
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                                    Date date = simpleDateFormat.parse(jsonObject.getString("createdAt"));
                                     HashMap<String,Object> hashMap = new HashMap<>();
                                     hashMap.put("text", text);
-                                    hashMap.put("createdAt", jsonObject.getString("createdAt"));
+                                    hashMap.put("createdAt", date);
                                     arrayList.add(hashMap);
                                 }
                             }
                             simpleAdapter.notifyDataSetChanged();
                             progressDialog.dismiss();
                         } catch (JSONException e) {
+                        } catch (ParseException e) {
                         }
                     }
                 }.execute( new SendPostTaskParams(
