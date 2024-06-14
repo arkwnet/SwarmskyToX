@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (!token.equals("")) {
                     request.put("i", token);
                 }
-
                 new SendPostAsyncTask() {
                     @Override
                     protected void onPostExecute(String response) {
@@ -110,9 +109,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                                     simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                                     Date date = simpleDateFormat.parse(jsonObject.getString("createdAt"));
+                                    long unixCreatedAt = date.getTime() / 1000;
+                                    long unixNow = System.currentTimeMillis() / 1000;
+                                    String dateText = "";
+                                    if (unixNow < unixCreatedAt) {
+                                        dateText = "未来";
+                                    } else if (unixNow == unixCreatedAt) {
+                                        dateText = "たった今";
+                                    } else {
+                                        long unixDiff = unixNow - unixCreatedAt;
+                                        if (unixDiff < 60) {
+                                            dateText = unixDiff + "秒前";
+                                        } else if (unixDiff >= 60 && unixDiff < 60 * 60) {
+                                            dateText = (unixDiff / 60) + "分前";
+                                        } else {
+                                            dateText = "1時間以上前";
+                                        }
+                                    }
                                     HashMap<String,Object> hashMap = new HashMap<>();
                                     hashMap.put("text", text);
-                                    hashMap.put("createdAt", date);
+                                    hashMap.put("createdAt", dateText);
                                     arrayList.add(hashMap);
                                 }
                             }
