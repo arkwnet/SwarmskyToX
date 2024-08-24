@@ -17,17 +17,14 @@ public class SendPostAsyncTask extends AsyncTask<SendPostTaskParams, String, Str
         String response = "";
         try {
             byte[] postDataBytes = postDataParams.getBytes("UTF-8");
-
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
-            conn.setConnectTimeout(60000);
+            conn.setConnectTimeout(10000);
             conn.addRequestProperty("Content-Type", "application/json; charset=UTF-8");
-
             conn.getOutputStream().write(postDataBytes);
             int responseCode = conn.getResponseCode();
-
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
