@@ -135,15 +135,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             simpleAdapter.notifyDataSetChanged();
                             progressDialog.dismiss();
                         } catch (JSONException e) {
+                            System.out.println(e.getMessage());
                         } catch (ParseException e) {
+                            System.out.println(e.getMessage());
                         }
                     }
                 }.execute( new SendPostTaskParams(
-                        "https://" + host + "/api/users/notes",
-                        request.toString()
+                    "https://" + host + "/api/users/notes",
+                    request.toString()
                 ));
             } catch (JSONException e) {
-                throw new RuntimeException(e);
+                System.out.println(e.getMessage());
             }
         } else {
             showAlert("Misskeyのホスト名とユーザIDを設定してください。");
