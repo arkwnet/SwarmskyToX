@@ -3,7 +3,6 @@ package jp.arkw.swarmskytox;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -16,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 
 import org.json.JSONArray;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static final String[] simpleAdapterKey = {"text", "createdAt"};
     private static final int[] simpleAdapterId = {R.id.text, R.id.created_at};
     private SharedPreferences sharedPreferences;
-    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +51,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setOnItemClickListener(this);
         simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.list, simpleAdapterKey, simpleAdapterId);
         listView.setAdapter(simpleAdapter);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("読み込み中…");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar = findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.INVISIBLE);
         update();
     }
 
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         arrayList.clear();
         simpleAdapter.notifyDataSetChanged();
         if (!host.equals("") && !userId.equals("")) {
-            progressDialog.show();
+            progressBar.setVisibility(View.VISIBLE);
             try {
                 JSONObject request = new JSONObject();
                 request.put("userId", userId);
@@ -133,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 }
                             }
                             simpleAdapter.notifyDataSetChanged();
-                            progressDialog.dismiss();
+                            progressBar.setVisibility(View.INVISIBLE);
                         } catch (JSONException e) {
                             System.out.println(e.getMessage());
                         } catch (ParseException e) {
