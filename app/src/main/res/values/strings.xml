@@ -16,4 +16,11 @@
     <string name="settings_text_view_token2">例: a0B1c2D3e4F5g6H7i8J9k0L1m2N3o4P5\nMisskeyの設定→API→アクセストークンの発行から取得できます</string>
     <string name="settings_button_ok">OK</string>
     <string name="settings_privacy">プライバシーポリシー</string>
+    <string name="alert_nodata">Misskeyのホスト名とユーザIDを設定してください。</string>
+    <string name="alert_error">エラーが発生しました。もう一度お試しください。</string>
+    <string name="created_at_future">未来</string>
+    <string name="created_at_now">たった今</string>
+    <string name="created_at_second">秒前</string>
+    <string name="created_at_minute">分前</string>
+    <string name="created_at_hour">1時間以上前</string>
 </resources>

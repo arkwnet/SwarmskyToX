@@ -112,17 +112,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                     long unixNow = System.currentTimeMillis() / 1000;
                                     String dateText = "";
                                     if (unixNow < unixCreatedAt) {
-                                        dateText = "未来";
+                                        dateText = getString(R.string.created_at_future);
                                     } else if (unixNow == unixCreatedAt) {
-                                        dateText = "たった今";
+                                        dateText = getString(R.string.created_at_now);
                                     } else {
                                         long unixDiff = unixNow - unixCreatedAt;
                                         if (unixDiff < 60) {
-                                            dateText = unixDiff + "秒前";
+                                            dateText = unixDiff + getString(R.string.created_at_second);
                                         } else if (unixDiff >= 60 && unixDiff < 60 * 60) {
-                                            dateText = (unixDiff / 60) + "分前";
+                                            dateText = (unixDiff / 60) + getString(R.string.created_at_minute);
                                         } else {
-                                            dateText = "1時間以上前";
+                                            dateText = getString(R.string.created_at_hour);
                                         }
                                     }
                                     HashMap<String,Object> hashMap = new HashMap<>();
@@ -135,8 +135,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             progressBar.setVisibility(View.INVISIBLE);
                         } catch (JSONException e) {
                             System.out.println(e.getMessage());
+                            progressBar.setVisibility(View.INVISIBLE);
+                            showAlert(getString(R.string.alert_error));
                         } catch (ParseException e) {
                             System.out.println(e.getMessage());
+                            progressBar.setVisibility(View.INVISIBLE);
+                            showAlert(getString(R.string.alert_error));
                         }
                     }
                 }.execute( new SendPostTaskParams(
@@ -145,9 +149,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 ));
             } catch (JSONException e) {
                 System.out.println(e.getMessage());
+                progressBar.setVisibility(View.INVISIBLE);
+                showAlert(getString(R.string.alert_error));
             }
         } else {
-            showAlert("Misskeyのホスト名とユーザIDを設定してください。");
+            showAlert(getString(R.string.alert_nodata));
         }
     }
 
