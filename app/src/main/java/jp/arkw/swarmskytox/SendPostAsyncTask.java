@@ -36,6 +36,7 @@ public class SendPostAsyncTask extends AsyncTask<SendPostTaskParams, String, Str
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return e.getMessage();
         }
         return response;
     }
