@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static final int[] simpleAdapterId = {R.id.text, R.id.created_at};
     private SharedPreferences sharedPreferences;
     private ProgressBar progressBar;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setAdapter(simpleAdapter);
         progressBar = findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
+        textView = findViewById(R.id.text_view);
+        textView.setVisibility(View.INVISIBLE);
         update();
     }
 
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         simpleAdapter.notifyDataSetChanged();
         if (!host.equals("") && !userId.equals("")) {
             progressBar.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.INVISIBLE);
             try {
                 JSONObject request = new JSONObject();
                 request.put("userId", userId);
@@ -133,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             }
                             simpleAdapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.INVISIBLE);
+                            if (arrayList.size() == 0) {
+                                textView.setVisibility(View.VISIBLE);
+                            }
                         } catch (JSONException e) {
                             System.out.println(e.getMessage());
                             progressBar.setVisibility(View.INVISIBLE);

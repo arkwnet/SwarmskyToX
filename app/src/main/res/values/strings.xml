@@ -23,4 +23,5 @@
     <string name="created_at_second">秒前</string>
     <string name="created_at_minute">分前</string>
     <string name="created_at_hour">1時間以上前</string>
+    <string name="message_no_post">Swarmに関連するノートがありません</string>
 </resources>
