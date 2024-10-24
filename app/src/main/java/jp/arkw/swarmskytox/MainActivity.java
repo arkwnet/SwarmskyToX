@@ -3,7 +3,6 @@ package jp.arkw.swarmskytox;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -16,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static final String[] simpleAdapterKey = {"text", "createdAt"};
     private static final int[] simpleAdapterId = {R.id.text, R.id.created_at};
     private SharedPreferences sharedPreferences;
-    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +53,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setOnItemClickListener(this);
         simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.list, simpleAdapterKey, simpleAdapterId);
         listView.setAdapter(simpleAdapter);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("読み込み中…");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar = findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.INVISIBLE);
+        textView = findViewById(R.id.text_view);
+        textView.setVisibility(View.INVISIBLE);
         update();
     }
 
@@ -85,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         arrayList.clear();
         simpleAdapter.notifyDataSetChanged();
         if (!host.equals("") && !userId.equals("")) {
-            progressDialog.show();
+            progressBar.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.INVISIBLE);
             try {
                 JSONObject request = new JSONObject();
                 request.put("userId", userId);
@@ -113,17 +117,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                     long unixNow = System.currentTimeMillis() / 1000;
                                     String dateText = "";
                                     if (unixNow < unixCreatedAt) {
-                                        dateText = "未来";
+                                        dateText = getString(R.string.created_at_future);
                                     } else if (unixNow == unixCreatedAt) {
-                                        dateText = "たった今";
+                                        dateText = getString(R.string.created_at_now);
                                     } else {
                                         long unixDiff = unixNow - unixCreatedAt;
                                         if (unixDiff < 60) {
-                                            dateText = unixDiff + "秒前";
+                                            dateText = unixDiff + getString(R.string.created_at_second);
                                         } else if (unixDiff >= 60 && unixDiff < 60 * 60) {
-                                            dateText = (unixDiff / 60) + "分前";
+                                            dateText = (unixDiff / 60) + getString(R.string.created_at_minute);
                                         } else {
-                                            dateText = "1時間以上前";
+                                            dateText = getString(R.string.created_at_hour);
                                         }
                                     }
                                     HashMap<String,Object> hashMap = new HashMap<>();
@@ -133,11 +137,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 }
                             }
                             simpleAdapter.notifyDataSetChanged();
-                            progressDialog.dismiss();
+                            progressBar.setVisibility(View.INVISIBLE);
+                            if (arrayList.size() == 0) {
+                                textView.setVisibility(View.VISIBLE);
+                            }
                         } catch (JSONException e) {
                             System.out.println(e.getMessage());
+                            progressBar.setVisibility(View.INVISIBLE);
+                            showAlert(getString(R.string.alert_error));
                         } catch (ParseException e) {
                             System.out.println(e.getMessage());
+                            progressBar.setVisibility(View.INVISIBLE);
+                            showAlert(getString(R.string.alert_error));
                         }
                     }
                 }.execute( new SendPostTaskParams(
@@ -146,9 +157,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 ));
             } catch (JSONException e) {
                 System.out.println(e.getMessage());
+                progressBar.setVisibility(View.INVISIBLE);
+                showAlert(getString(R.string.alert_error));
             }
         } else {
-            showAlert("Misskeyのホスト名とユーザIDを設定してください。");
+            showAlert(getString(R.string.alert_nodata));
         }
     }
 
