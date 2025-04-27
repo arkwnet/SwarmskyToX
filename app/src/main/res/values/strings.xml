@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SwarmskyToX</string>
     <string name="app_description">Misskey (Swarmsky) の投稿をXに転送するアプリ</string>
-    <string name="app_copyright">Copyright (c) 2023, 2024 Sora Arakawa</string>
+    <string name="app_copyright">Copyright (c) 2023-2025 Sora Arakawa</string>
     <string name="app_license">Licensed under the MIT License</string>
     <string name="app_url_web">https://arkw.net/</string>
     <string name="app_url_github">https://github.com/arkwnet/SwarmskyToX</string>
