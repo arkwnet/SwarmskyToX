@@ -3,6 +3,9 @@ package jp.arkw.swarmskytox;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -12,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -31,10 +35,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity {
     private String host;
     private String userId;
     private String token;
+    private boolean isPost;
+    private ClipboardManager clipboardManager;
     private ListView listView;
     private ArrayList<Map<String, Object>> arrayList = new ArrayList<>();
     private SimpleAdapter simpleAdapter;
@@ -49,14 +55,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         listView = findViewById(R.id.list_view);
-        listView.setOnItemClickListener(this);
+        listView.setOnItemClickListener((parent, view, index, id) -> {
+            if (isPost == true) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                String message = Uri.encode((String) arrayList.get(index).get("text"));
+                intent.setData(Uri.parse("twitter://post?message=" + message));
+                startActivity(intent);
+            }
+        });
+        listView.setOnItemLongClickListener((parent, view, index, id) -> {
+            isPost = false;
+            String message = (String) arrayList.get(index).get("text");
+            ClipData clipData = ClipData.newPlainText("", message);
+            clipboardManager.setPrimaryClip(clipData);
+            return true;
+        });
+        listView.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
+                isPost = true;
+            }
+            return false;
+        });
         simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.list, simpleAdapterKey, simpleAdapterId);
         listView.setAdapter(simpleAdapter);
         progressBar = findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
         textView = findViewById(R.id.text_view);
         textView.setVisibility(View.INVISIBLE);
+        isPost = true;
         update();
     }
 
@@ -87,14 +115,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         token = sharedPreferences.getString("token", "");
         arrayList.clear();
         simpleAdapter.notifyDataSetChanged();
-        if (!host.equals("") && !userId.equals("")) {
+        if (!host.isEmpty() && !userId.isEmpty()) {
             progressBar.setVisibility(View.VISIBLE);
             textView.setVisibility(View.INVISIBLE);
             try {
                 JSONObject request = new JSONObject();
                 request.put("userId", userId);
                 request.put("limit", 5);
-                if (!token.equals("")) {
+                if (!token.isEmpty()) {
                     request.put("i", token);
                 }
                 new SendPostAsyncTask() {
@@ -163,14 +191,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else {
             showAlert(getString(R.string.alert_nodata));
         }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View v, int index, long i) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        String messsage = Uri.encode((String) arrayList.get(index).get("text"));
-        intent.setData(Uri.parse("twitter://post?message=" + messsage));
-        startActivity(intent);
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -14,9 +15,9 @@ public class SendPostAsyncTask extends AsyncTask<SendPostTaskParams, String, Str
     protected String doInBackground(SendPostTaskParams... params) {
         String urlString = params[0].url;
         String postDataParams = params[0].postData;
-        String response = "";
+        StringBuilder response = new StringBuilder();
         try {
-            byte[] postDataBytes = postDataParams.getBytes("UTF-8");
+            byte[] postDataBytes = postDataParams.getBytes(StandardCharsets.UTF_8);
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -29,15 +30,15 @@ public class SendPostAsyncTask extends AsyncTask<SendPostTaskParams, String, Str
                 String line;
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 while ((line = bufferedReader.readLine()) != null) {
-                    response += line;
+                    response.append(line);
                 }
             } else {
-                response = "";
+                response = new StringBuilder();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return e.getMessage();
         }
-        return response;
+        return response.toString();
     }
 }
