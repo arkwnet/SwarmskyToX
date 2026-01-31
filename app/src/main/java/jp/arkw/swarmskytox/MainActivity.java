@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private String host;
     private String userId;
     private String token;
-    private boolean isPost;
+    private boolean isPost = false;
     private ClipboardManager clipboardManager;
     private ListView listView;
     private ArrayList<Map<String, Object>> arrayList = new ArrayList<>();
@@ -84,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
         textView = findViewById(R.id.text_view);
         textView.setVisibility(View.INVISIBLE);
+        if (!sharedPreferences.getBoolean("tutorial", false)) {
+            Editor editor = sharedPreferences.edit();
+            editor.apply();
+        }
         isPost = true;
         update();
     }
@@ -197,20 +201,15 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {
-            Editor editor = sharedPreferences.edit();
-            editor.putString("host", intent.getStringExtra("host"));
-            editor.putString("userId", intent.getStringExtra("userId"));
-            editor.putString("token", intent.getStringExtra("token"));
-            editor.apply();
             update();
         }
     }
 
     private void showAlert(String text) {
         new AlertDialog.Builder(this, R.style.Dialog_Theme_SwarmskyToX)
-                .setTitle("")
-                .setMessage(text)
-                .setPositiveButton("OK", null)
-                .show();
+            .setTitle("")
+            .setMessage(text)
+            .setPositiveButton("OK", null)
+            .show();
     }
 }
