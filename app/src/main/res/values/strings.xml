@@ -7,6 +7,7 @@
     <string name="app_url_github">https://github.com/arkwnet/SwarmskyToX</string>
     <string name="app_url_privacy">https://arkw.net/privacy/</string>
     <string name="button_refresh">更新</string>
+    <string name="button_tutorial">操作説明</string>
     <string name="button_settings">設定</string>
     <string name="settings_edit_text_host">ホスト名</string>
     <string name="settings_edit_text_userid">ユーザID</string>
@@ -26,5 +27,9 @@
     <string name="created_at_minute">分前</string>
     <string name="created_at_hour">1時間以上前</string>
     <string name="message_no_post">Swarmに関連するノートがありません</string>
+    <string name="title_tutorial">操作説明</string>
     <string name="title_settings">設定</string>
+    <string name="tutorial1">SwarmskyToXは、Swarmsky経由でMisskeyに投稿されたノートをX (旧Twitter) に転送するアプリです。</string>
+    <string name="tutorial2">まず、画面右上の設定ボタンからMisskeyのアカウント情報を入力します。ホスト名は「@arkw@misskey.io」のようなActivityPubユーザ名の「misskey.io」の部分で、一般的にはMisskeyインスタンスのドメイン名と同じです。ユーザIDはMisskeyの設定→その他→アカウント情報から確認できます。先ほど例示したユーザ名の「arkw」にあたる部分では無いため注意してください。非公開のサーバ・アカウントなど、必要な場合のみMisskeyで発行したアクセストークンも指定します。該当項目の入力が終わったら保存ボタンを押してください。</string>
+    <string name="tutorial3">Misskeyのアカウント情報が正しく設定され、かつ直近でSwarmskyを利用していれば合致するノートが一覧表示されます。各ノートを短くタップすると、同じ文面をXのポスト作成画面に転送します。X以外のSNSへの投稿など、クリップボードへ文章をコピーしたい時は長くタップしてください。</string>
 </resources>

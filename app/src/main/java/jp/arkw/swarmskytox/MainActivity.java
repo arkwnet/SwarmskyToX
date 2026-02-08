@@ -103,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_button_refresh) {
             update();
+        } else if (item.getItemId() == R.id.action_button_tutorial) {
+            Intent intent = new Intent(getApplication(), TutorialActivity.class);
+            startActivity(intent);
         } else if (item.getItemId() == R.id.action_button_settings) {
             Intent intent = new Intent(getApplication(), SettingsActivity.class);
             intent.putExtra("host", host);
