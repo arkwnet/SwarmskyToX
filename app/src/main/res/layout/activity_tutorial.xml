@@ -27,8 +27,8 @@
                 android:text="@string/tutorial1" />
 
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
@@ -41,11 +41,11 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                app:srcCompat="@drawable/tutorial1" />
+                app:srcCompat="@drawable/tutorial2" />
 
             <TextView
                 android:layout_width="match_parent"
