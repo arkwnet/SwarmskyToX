@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -17,11 +18,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         listView = findViewById(R.id.list_view);
         listView.setOnItemClickListener((parent, view, index, id) -> {
-            if (isPost == true) {
+            if (isPost) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 String message = Uri.encode((String) arrayList.get(index).get("text"));
                 intent.setData(Uri.parse("twitter://post?message=" + message));
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
             String message = (String) arrayList.get(index).get("text");
             ClipData clipData = ClipData.newPlainText("", message);
             clipboardManager.setPrimaryClip(clipData);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                Toast.makeText(this, "クリップボードにコピーしました", Toast.LENGTH_SHORT).show();
+            }
             return true;
         });
         listView.setOnTouchListener((view, motionEvent) -> {
