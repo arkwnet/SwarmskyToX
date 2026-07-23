@@ -105,13 +105,13 @@
                 android:text="@string/settings_text_view_token2" />
 
             <Button
-                android:id="@+id/button_ok"
+                android:id="@+id/button_save"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/primary"
-                android:text="@string/settings_button_ok" />
+                android:text="@string/settings_button_save" />
 
             <View
                 android:layout_width="match_parent"

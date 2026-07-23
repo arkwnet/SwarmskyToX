@@ -3,21 +3,26 @@ package jp.arkw.swarmskytox;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,10 +36,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity {
     private String host;
     private String userId;
     private String token;
+    private boolean isPost = false;
+    private ClipboardManager clipboardManager;
     private ListView listView;
     private ArrayList<Map<String, Object>> arrayList = new ArrayList<>();
     private SimpleAdapter simpleAdapter;
@@ -49,14 +56,43 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         listView = findViewById(R.id.list_view);
-        listView.setOnItemClickListener(this);
+        listView.setOnItemClickListener((parent, view, index, id) -> {
+            if (isPost) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                String message = Uri.encode((String) arrayList.get(index).get("text"));
+                intent.setData(Uri.parse("twitter://post?message=" + message));
+                startActivity(intent);
+            }
+        });
+        listView.setOnItemLongClickListener((parent, view, index, id) -> {
+            isPost = false;
+            String message = (String) arrayList.get(index).get("text");
+            ClipData clipData = ClipData.newPlainText("", message);
+            clipboardManager.setPrimaryClip(clipData);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                Toast.makeText(this, "クリップボードにコピーしました", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
+        listView.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
+                isPost = true;
+            }
+            return false;
+        });
         simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.list, simpleAdapterKey, simpleAdapterId);
         listView.setAdapter(simpleAdapter);
         progressBar = findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
         textView = findViewById(R.id.text_view);
         textView.setVisibility(View.INVISIBLE);
+        if (!sharedPreferences.getBoolean("tutorial", false)) {
+            Editor editor = sharedPreferences.edit();
+            editor.apply();
+        }
+        isPost = true;
         update();
     }
 
@@ -71,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_button_refresh) {
             update();
+        } else if (item.getItemId() == R.id.action_button_tutorial) {
+            Intent intent = new Intent(getApplication(), TutorialActivity.class);
+            startActivity(intent);
         } else if (item.getItemId() == R.id.action_button_settings) {
             Intent intent = new Intent(getApplication(), SettingsActivity.class);
             intent.putExtra("host", host);
@@ -87,14 +126,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         token = sharedPreferences.getString("token", "");
         arrayList.clear();
         simpleAdapter.notifyDataSetChanged();
-        if (!host.equals("") && !userId.equals("")) {
+        if (!host.isEmpty() && !userId.isEmpty()) {
             progressBar.setVisibility(View.VISIBLE);
             textView.setVisibility(View.INVISIBLE);
             try {
                 JSONObject request = new JSONObject();
                 request.put("userId", userId);
                 request.put("limit", 5);
-                if (!token.equals("")) {
+                if (!token.isEmpty()) {
                     request.put("i", token);
                 }
                 new SendPostAsyncTask() {
@@ -166,31 +205,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View v, int index, long i) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        String messsage = Uri.encode((String) arrayList.get(index).get("text"));
-        intent.setData(Uri.parse("twitter://post?message=" + messsage));
-        startActivity(intent);
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {
-            Editor editor = sharedPreferences.edit();
-            editor.putString("host", intent.getStringExtra("host"));
-            editor.putString("userId", intent.getStringExtra("userId"));
-            editor.putString("token", intent.getStringExtra("token"));
-            editor.apply();
             update();
         }
     }
 
     private void showAlert(String text) {
         new AlertDialog.Builder(this, R.style.Dialog_Theme_SwarmskyToX)
-                .setTitle("")
-                .setMessage(text)
-                .setPositiveButton("OK", null)
-                .show();
+            .setTitle("")
+            .setMessage(text)
+            .setPositiveButton("OK", null)
+            .show();
     }
 }
