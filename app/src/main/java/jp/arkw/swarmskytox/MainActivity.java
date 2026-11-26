@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             if (isPost) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 String message = Uri.encode((String) arrayList.get(index).get("text"));
-                intent.setData(Uri.parse("twitter://post?message=" + message));
+                intent.setData(Uri.parse("twitter://post?text=" + message));
                 startActivity(intent);
             }
         });
